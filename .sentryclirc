@@ -1,0 +1,7 @@
+[defaults]
+url = http://127.0.0.1:9000/
+org = kdgc
+project = equity
+
+[auth]
+token = ec7488a6798c4eccb5bcb215fef76274842fe675bd044d6e99d69b2e9711d086
