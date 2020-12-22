@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <article-item v-for="item in article.list" :key="item.id" :title="item.title"></article-item>
-  </div>
+  <ul class="article-list">
+    <article-item class="article-item" v-for="item in article.list" :key="item.id" :title="item.title" :author="item.author"></article-item>
+  </ul>
 </template>
 
 <script lang="ts">
@@ -32,11 +32,15 @@ export default defineComponent({
       apiGetArticleList<IArticle>(this.article.page, this.article.rows)
         .then(res => {
           this.article.list = res.data;
-
-          console.info(this.article);
         })
         .catch();
     }
   }
 });
 </script>
+
+<style lang="scss" scoped>
+.article-list {
+  padding: 20px 0;
+}
+</style>

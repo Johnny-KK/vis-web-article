@@ -3,6 +3,7 @@ export interface IArticle {
   id: number;
   title: string;
   author: string;
+  modifyTime: string;
 }
 
 /** 标准后台请求返回接口 */

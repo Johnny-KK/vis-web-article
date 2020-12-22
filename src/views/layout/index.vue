@@ -2,9 +2,9 @@
   <div class="layout-header">header</div>
 
   <div class="layout-main">
-    <div>left</div>
-    <article-list></article-list>
-    <div>right</div>
+    <div class="layout-main__left">left</div>
+    <article-list class="layout-main__middle"></article-list>
+    <div class="layout-main__right">right</div>
   </div>
 </template>
 
@@ -28,5 +28,20 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   justify-content: center;
+
+  background-color: #f4f5f5;
+
+  &__left {
+    flex: 0 0 20%;
+  }
+
+  &__middle {
+    flex: 0 0 60%;
+    // text-align: center;
+  }
+
+  &__right {
+    flex: 0 0 20%;
+  }
 }
 </style>
