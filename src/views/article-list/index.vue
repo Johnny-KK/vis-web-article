@@ -1,6 +1,6 @@
 <template>
   <div>
-    <article-item v-for="item in article.list" :key="item.id"></article-item>
+    <article-item v-for="item in article.list" :key="item.id" :title="item.title"></article-item>
   </div>
 </template>
 
@@ -29,9 +29,13 @@ export default defineComponent({
   },
   methods: {
     getArticleList() {
-      apiGetArticleList<IArticle>().then(res => {
-        console.info(res);
-      });
+      apiGetArticleList<IArticle>(this.article.page, this.article.rows)
+        .then(res => {
+          this.article.list = res.data;
+
+          console.info(this.article);
+        })
+        .catch();
     }
   }
 });

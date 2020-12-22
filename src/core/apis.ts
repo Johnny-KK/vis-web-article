@@ -1,5 +1,12 @@
 import { ApiResponse } from '@/core/entities';
+import http from './axios';
 
-export function apiGetArticleList<T>(): Promise<ApiResponse<T>> {
-  return Promise.resolve({ data: {} as T, success: true, msg: '' });
+/**
+ * 条件获取文章列表
+ *
+ * @param page 页数
+ * @param rows 行数
+ */
+export function apiGetArticleList<T>(page: number, rows: number): Promise<ApiResponse<T[]>> {
+  return http.get<T[]>('/aricle/getArticleList', { params: { page, rows } });
 }

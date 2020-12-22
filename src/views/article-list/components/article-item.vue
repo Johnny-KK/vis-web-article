@@ -1,6 +1,6 @@
 <template>
   <div>
-    article item
+    {{ title }}
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'article-item'
+  name: 'article-item',
+  props: { title: { type: String, required: true, default: '' } }
 });
 </script>

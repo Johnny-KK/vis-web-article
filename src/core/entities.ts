@@ -1,6 +1,8 @@
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IArticle {
   id: number;
   title: string;
+  author: string;
 }
 
 /** 标准后台请求返回接口 */
