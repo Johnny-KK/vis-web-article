@@ -10,3 +10,12 @@ import http from './axios';
 export function apiGetArticleList<T>(page: number, rows: number): Promise<ApiResponse<T[]>> {
   return http.get<T[]>('/aricle/getArticleList', { params: { page, rows } });
 }
+
+/**
+ * 根据ID获取文章内容
+ *
+ * @param id ID
+ */
+export function apiGetArticleById<T>(id: number): Promise<ApiResponse<T>> {
+  return http.get('/article/getArticleById', { params: { id } });
+}

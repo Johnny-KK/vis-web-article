@@ -35,8 +35,12 @@ export default defineComponent({
   border-bottom: 1px solid rgba(178, 186, 194, 0.15);
   list-style-type: none;
 
+  &:last-child {
+    border-bottom: none;
+  }
+
   &:hover {
-    background-color: #f4f5f5;
+    background-color: #fbfbfb;
   }
 
   &__head {
@@ -59,6 +63,10 @@ export default defineComponent({
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+   &__title:hover {
+    text-decoration: underline;
   }
 
   &__foot {

@@ -1,6 +1,6 @@
 <template>
   <ul class="article-list">
-    <article-item class="article-item" v-for="item in article.list" :key="item.id" :title="item.title" :author="item.author"></article-item>
+    <article-item class="article-item" v-for="item in article.list" :key="item.id" :title="item.title" :author="item.author" @click="showPage(item)"></article-item>
   </ul>
 </template>
 
@@ -34,6 +34,10 @@ export default defineComponent({
           this.article.list = res.data;
         })
         .catch();
+    },
+    // 跳转到详情页面
+    showPage(item: IArticle) {
+      this.$router.push(`/article/${item.id}`);
     }
   }
 });
