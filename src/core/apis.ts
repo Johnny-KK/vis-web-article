@@ -8,14 +8,19 @@ import http from './axios';
  * @param rows 行数
  */
 export function apiGetArticleList<T>(page: number, rows: number): Promise<ApiResponse<T[]>> {
-  return http.get<T[]>('/aricle/getArticleList', { params: { page, rows } });
+  return http.get<T[]>('/article/getArticleList', { params: { page, rows } });
 }
 
 /**
- * 根据ID获取文章内容
+ * 根据ID获取文章信息
  *
  * @param id ID
  */
-export function apiGetArticleById<T>(id: number): Promise<ApiResponse<T>> {
+export function apiGetArticleById<T>(id: string): Promise<ApiResponse<T>> {
   return http.get('/article/getArticleById', { params: { id } });
 }
+
+/**
+ * 新增文章
+ */
+// export function apiaddArticle() {}

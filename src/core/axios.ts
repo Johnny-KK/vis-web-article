@@ -19,6 +19,9 @@ axios.interceptors.request.use(config => {
 });
 
 /**
+ * TODO handle 错误异常
+ */
+/**
  * axios自定义封装
  */
 const http = {
@@ -27,7 +30,24 @@ const http = {
       axios
         .get(url, config)
         .then(res => {
-          console.log(res);
+          if (res.status === 200) {
+            resolve({
+              data: res.data.data,
+              success: true,
+              msg: res.statusText
+            });
+          } else {
+            reject(res);
+          }
+        })
+        .catch(error => reject(error));
+    });
+  },
+  post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+    return new Promise((resolve, reject) => {
+      axios
+        .post(url, data, config)
+        .then(res => {
           if (res.status === 200) {
             resolve({
               data: res.data.data,

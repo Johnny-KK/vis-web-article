@@ -9,7 +9,7 @@ module.exports = {
     /** 代理设置 */
     proxy: {
       '/api': {
-        target: process.env.VUE_APP_API_MOCK_URL, // 网关地址,
+        target: process.env.VUE_APP_API_BASE_URL, // 网关地址,
         changeOrigin: true,
         timeout: 240000, // 设置超时时间
         pathRewrite: {
