@@ -1,5 +1,7 @@
 <template>
-  <div class="layout-header">header</div>
+  <div class="layout-header">
+    <el-button type="primary" @click="add">新增</el-button>
+  </div>
 
   <div class="layout-main">
     <div class="layout-main__left">left</div>
@@ -15,13 +17,19 @@ import ArticleList from '@/views/article-list/index.vue';
 
 export default defineComponent({
   name: 'layout',
-  components: { [ArticleList.name]: ArticleList }
+  components: { [ArticleList.name]: ArticleList },
+  methods: {
+    // 新增文章
+    add(): void {
+      this.$router.push('/article-edit/add/null');
+    }
+  }
 });
 </script>
 
 <style lang="scss" scoped>
 .layout-header {
-  background-color: aquamarine;
+  background-color: #fff;
 }
 
 .layout-main {

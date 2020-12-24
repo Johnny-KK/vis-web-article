@@ -1,22 +1,20 @@
 <template>
-  <div class="article-header">header</div>
+  <header class="article-header">header</header>
 
   <div class="article-main">
     <div class="article-main__left">left</div>
+
     <div class="article-main__middle">
-      <div>{{ article }}</div>
-
       <a class="article-author">{{ article.author }}</a>
-
       <div class="article-meta-box">
         <span>{{ article.modifyTime }}</span>
         <span class="dot">·</span>
-        <span class="edit-btn">编辑</span>
+        <span class="edit-btn" @click="edit(article.id)">编辑</span>
       </div>
-
       <div class="article-title">{{ article.title }}</div>
       <div v-html="contentHtml"></div>
     </div>
+
     <div class="article-main__right">right</div>
   </div>
 </template>
@@ -48,9 +46,13 @@ export default defineComponent({
   methods: {
     // 根据ID获取文章信息
     getArticleById() {
-      apiGetArticleById<IArticle>(this.id).then(res => {
+      apiGetArticleById(this.id).then(res => {
         Object.assign(this.article, res.data);
       });
+    },
+    // 编辑
+    edit(id: string) {
+      this.$router.push(`/article-edit/update/${id}`);
     }
   }
 });

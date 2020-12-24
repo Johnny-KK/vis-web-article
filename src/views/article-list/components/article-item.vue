@@ -2,7 +2,7 @@
   <li class="article-item">
     <div class="article-item__head">
       <span>{{ author }}</span>
-      <span>5小时前</span>
+      <span>{{ modifyTime }}</span>
       <span>前端</span>
     </div>
     <div class="article-item__title">{{ title }}</div>
@@ -23,7 +23,11 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'article-item',
-  props: { title: { type: String, required: true, default: '' }, author: { type: String, required: true, default: '' } }
+  props: {
+    title: { type: String, required: true, default: '' },
+    author: { type: String, required: true, default: '' },
+    modifyTime: { type: String, required: true }
+  }
 });
 </script>
 
@@ -52,6 +56,10 @@ export default defineComponent({
       margin: 0 0.4em;
       color: #b2bac2;
     }
+
+    & > span:last-child::after {
+      display: none;
+    }
   }
 
   &__title {
@@ -65,7 +73,7 @@ export default defineComponent({
     text-overflow: ellipsis;
   }
 
-   &__title:hover {
+  &__title:hover {
     text-decoration: underline;
   }
 

@@ -1,6 +1,14 @@
 <template>
   <ul class="article-list">
-    <article-item class="article-item" v-for="item in article.list" :key="item.id" :title="item.title" :author="item.author" @click="showPage(item)"></article-item>
+    <article-item
+      class="article-item"
+      v-for="item in article.list"
+      :key="item.id"
+      :title="item.title"
+      :author="item.author"
+      :modifyTime="item.modifyTime"
+      @click="showPage(item)"
+    ></article-item>
   </ul>
 </template>
 
@@ -10,7 +18,6 @@ import { defineComponent, reactive } from 'vue';
 import ArticleItem from './components/article-item.vue';
 
 import { IArticle } from '@/core/entities';
-
 import { apiGetArticleList } from '@/core/apis';
 
 export default defineComponent({

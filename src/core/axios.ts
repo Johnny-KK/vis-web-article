@@ -43,7 +43,7 @@ const http = {
         .catch(error => reject(error));
     });
   },
-  post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
+  post<T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
     return new Promise((resolve, reject) => {
       axios
         .post(url, data, config)

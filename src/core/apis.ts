@@ -1,4 +1,4 @@
-import { ApiResponse } from '@/core/entities';
+import { ApiResponse, IArticle } from '@/core/entities';
 import http from './axios';
 
 /**
@@ -16,11 +16,20 @@ export function apiGetArticleList<T>(page: number, rows: number): Promise<ApiRes
  *
  * @param id ID
  */
-export function apiGetArticleById<T>(id: string): Promise<ApiResponse<T>> {
-  return http.get('/article/getArticleById', { params: { id } });
+export function apiGetArticleById(id: string): Promise<ApiResponse<IArticle>> {
+  return http.get<IArticle>('/article/getArticleById', { params: { id } });
 }
 
 /**
  * 新增文章
  */
-// export function apiaddArticle() {}
+export function apiAddArticle(form: IArticle): Promise<ApiResponse<IArticle>> {
+  return http.post<IArticle>('/article/addArticle', form);
+}
+
+/**
+ * 更新文章
+ */
+export function apiUpdateArticle(form: IArticle): Promise<ApiResponse<IArticle>> {
+  return http.post<IArticle>('/article/updateArticle', form);
+}
