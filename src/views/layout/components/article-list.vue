@@ -1,37 +1,58 @@
 <template>
-  <li class="article-item">
-    <div class="article-item__head">
-      <span>{{ author }}</span>
-      <span>{{ modifyTime }}</span>
-      <span>前端</span>
-    </div>
-    <div class="article-item__title">{{ title }}</div>
-    <ul class="article-item__foot">
-      <li>
-        <i class="el-icon-view"></i>
-        <span>18</span>
-      </li>
+  <ul class="article-list">
+    <li class="article-item" v-for="item in article.list" :key="item.id" @click="$emit('showDetail', item.id)">
+      <div class="article-item__head">
+        <span>{{ item.author }}</span>
+        <span>{{ item.modifyTime }}</span>
+        <span>前端</span>
+      </div>
+      <div class="article-item__title">{{ item.title }}</div>
+      <ul class="article-item__foot">
+        <li>
+          <i class="el-icon-view"></i>
+          <span>18</span>
+        </li>
 
-      <li class="share-item">掘金</li>
-      <li class="share-item">知乎</li>
-    </ul>
-  </li>
+        <li class="share-item">掘金</li>
+        <li class="share-item">知乎</li>
+      </ul>
+    </li>
+  </ul>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
+
+import { IArticle } from '@/core/entities';
+import { apiGetArticleList } from '@/core/apis';
 
 export default defineComponent({
-  name: 'article-item',
-  props: {
-    title: { type: String, required: true, default: '' },
-    author: { type: String, required: true, default: '' },
-    modifyTime: { type: String, required: true }
+  name: 'article-list',
+  setup() {
+    const article: { list: IArticle[]; fuzzy: string; page: number; rows: number } = reactive({ list: [], fuzzy: '', page: 1, rows: 20 });
+    return { article };
+  },
+  created() {
+    this.getArticleList();
+  },
+  methods: {
+    // 条件查询文章列表
+    getArticleList() {
+      apiGetArticleList(this.article.fuzzy, this.article.page, this.article.rows)
+        .then(res => {
+          this.article.list = res.data;
+        })
+        .catch();
+    }
   }
 });
 </script>
 
 <style lang="scss" scoped>
+.article-list {
+  padding: 20px 0;
+}
+
 .article-item {
   background-color: white;
   padding: 1.5rem 2rem;

@@ -1,48 +1,45 @@
 <template>
   <header class="layout-header">
     <div class="header-empty"></div>
-    <el-input v-model="article.fuzzy" class="search-box" placeholder="搜索文章" clearable></el-input>
+    <el-input v-model="fuzzy" class="search-box" placeholder="搜索文章" clearable></el-input>
     <el-button class="add-btn" type="primary" @click="add">新增</el-button>
     <div class="header-empty"></div>
   </header>
 
   <div class="layout-main">
     <div class="layout-main__left">left</div>
-    <article-list class="layout-main__middle" :list="article.list"></article-list>
+
+    <section class="layout-main__middle">
+      <article-list v-if="type === 'list'" @show-detail="showArticleDetail" :fuzzy="fuzzy"></article-list>
+      <article-detail v-else :id="type" :fuzzy="fuzzy"></article-detail>
+    </section>
+
     <div class="layout-main__right">right</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, ref } from 'vue';
 
-import ArticleList from '@/views/article-list/index.vue';
-
-import { IArticle } from '@/core/entities';
-import { apiGetArticleList } from '@/core/apis';
+import ArticleList from './components/article-list.vue';
+import ArticleDetail from './components/article-detail.vue';
 
 export default defineComponent({
   name: 'layout',
-  components: { [ArticleList.name]: ArticleList },
+  components: { [ArticleList.name]: ArticleList, [ArticleDetail.name]: ArticleDetail },
+  props: { type: { type: String, default: 'list' } },
   setup() {
-    const article: { list: IArticle[]; fuzzy: string; page: number; rows: number } = reactive({ list: [], fuzzy: '', page: 1, rows: 20 });
-    return { article };
-  },
-  created() {
-    this.getArticleList();
+    const fuzzy = ref('');
+    return { fuzzy };
   },
   methods: {
-    // 条件查询文章列表
-    getArticleList() {
-      apiGetArticleList(this.article.fuzzy, this.article.page, this.article.rows)
-        .then(res => {
-          this.article.list = res.data;
-        })
-        .catch();
+    // 显示文章详情
+    showArticleDetail(id: string) {
+      window.open(`/#/layout/${id}`, '_blank');
     },
     // 新增文章
     add(): void {
-      this.$router.push('/article-edit/add/null');
+      window.open(`/#/article-edit/add/null`, '_blank');
     }
   }
 });
