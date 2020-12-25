@@ -1,15 +1,21 @@
 <template>
   <div class="article-edit">
     <header class="article-header">
-      <el-input v-model="article.title" placeholder="请输入标题" style="width: auto;"></el-input>
+      <el-input class="title-input" v-model="article.title" placeholder="请输入标题"></el-input>
       <a class="save-btn" @click="addOrupdateArticle">保存</a>
     </header>
 
     <div class="article-main">
       <section class="edit">
-        <el-input type="textarea" autosize placeholder="请输入内容" v-model="article.content"></el-input>
+        <el-scrollbar style="height: 100%;">
+          <el-input type="textarea" autosize placeholder="请输入内容" v-model="article.content"></el-input>
+        </el-scrollbar>
       </section>
-      <section class="view"><span v-html="contentHtml"></span></section>
+      <section class="view">
+        <el-scrollbar style="height: 100%;">
+          <span class="markdown-body" v-html="contentHtml"></span>
+        </el-scrollbar>
+      </section>
     </div>
   </div>
 </template>
@@ -79,23 +85,68 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.article-header {
-  background-color: aquamarine;
+.article-edit {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 
-  .save-btn {
-    cursor: pointer;
+  .article-header {
+    flex: 0 0 60px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid #ddd;
+
+    .title-input {
+      width: 50%;
+    }
+
+    /deep/ .title-input > input {
+      margin: 0;
+      padding: 0;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #000;
+      border: none;
+      outline: none;
+    }
+
+    .save-btn {
+      cursor: pointer;
+      font-size: 1.334rem;
+      white-space: nowrap;
+      color: #007fff;
+      user-select: none;
+    }
+  }
+
+  .article-main {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+
+    .edit {
+      background-color: #f8f9fa;
+      border-right: 1px solid #ddd;
+    }
+
+    .view {
+      background-color: #fff;
+    }
+
+    .edit,
+    .view {
+      height: 100%;
+      flex: 0 0 50%;
+      overflow: auto;
+    }
   }
 }
 
-.article-main {
-  display: flex;
-  flex-direction: row;
-
-  .edit,
-  .view {
-    flex: 0 0 50%;
-    border: 1px solid gainsboro;
-    padding: 2rem;
-  }
+/deep/ textarea {
+  border: none;
 }
 </style>
