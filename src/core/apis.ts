@@ -4,11 +4,12 @@ import http from './axios';
 /**
  * 条件获取文章列表
  *
+ * @param fuzzy 模糊搜索
  * @param page 页数
  * @param rows 行数
  */
-export function apiGetArticleList<T>(page: number, rows: number): Promise<ApiResponse<T[]>> {
-  return http.get<T[]>('/article/getArticleList', { params: { page, rows } });
+export function apiGetArticleList(fuzzy: string, page: number, rows: number): Promise<ApiResponse<IArticle[]>> {
+  return http.get<IArticle[]>('/article/getArticleList', { params: { fuzzy, page, rows } });
 }
 
 /**
