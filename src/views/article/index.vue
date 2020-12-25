@@ -12,7 +12,7 @@
         <span class="edit-btn" @click="edit(article.id)">编辑</span>
       </div>
       <div class="article-title">{{ article.title }}</div>
-      <div v-html="contentHtml"></div>
+      <div class="markdown-body" v-html="contentHtml"></div>
     </div>
 
     <div class="article-main__right">right</div>
@@ -77,6 +77,7 @@ export default defineComponent({
   &__middle {
     flex: 0 0 60%;
     background-color: white;
+    padding: 2rem;
 
     .article-author {
       display: inline-block;
