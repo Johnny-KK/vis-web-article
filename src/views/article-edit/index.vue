@@ -2,7 +2,7 @@
   <div class="article-edit">
     <header class="article-header">
       <el-input class="title-input" v-model="article.title" placeholder="请输入标题"></el-input>
-      <a class="save-btn" @click="addOrupdateArticle">保存</a>
+      <el-button class="add-btn" type="primary" @click="addOrupdateArticle" v-loading="isUpdateing">保存</el-button>
     </header>
 
     <div class="article-main">
@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { computed, defineComponent, reactive, ref } from 'vue';
 
 import { ElMessage } from 'element-plus';
 
@@ -40,12 +40,19 @@ export default defineComponent({
     id: { type: String, required: true, default: '' }
   },
   setup() {
+    // 文章
     const article: IArticle = reactive(emptyArticle);
-    return { article };
+    // 文章对应markdown渲染结果
+    const contentHtml = computed(() => converter.makeHtml(article.content));
+    // 是否更新
+    const needUpdate = ref(false);
+    const isUpdateing = ref(false);
+    return { article, contentHtml, needUpdate, isUpdateing };
   },
-  computed: {
-    contentHtml(): string {
-      return converter.makeHtml(this.article.content);
+  watch: {
+    // 文章内容发生变化时 需要自动保存
+    'article.content'() {
+      this.needUpdate = true;
     }
   },
   created() {
@@ -54,6 +61,12 @@ export default defineComponent({
     } else {
       this.getArticleById();
     }
+
+    setInterval(() => {
+      if (this.needUpdate === true) {
+        Promise.resolve(this.addOrupdateArticle()).then(() => (this.needUpdate = false));
+      }
+    }, 2000);
   },
   methods: {
     // 根据ID获取文章信息
@@ -64,20 +77,29 @@ export default defineComponent({
     },
     // 新增、更新文章
     addOrupdateArticle() {
+      this.isUpdateing = true;
       if (this.type === 'add') {
-        apiAddArticle(this.article).then(res => {
-          if (res.success) {
-            this.$router.replace(`/article-edit/update/${res.data.id}`);
-          }
-        });
+        apiAddArticle(this.article)
+          .then(res => {
+            if (res.success) {
+              this.$router.replace(`/article-edit/update/${res.data.id}`);
+            }
+          })
+          .finally(() => {
+            this.isUpdateing = false;
+          });
       } else {
-        apiUpdateArticle(this.article).then(res => {
-          if (res.success == true) {
-            this.getArticleById();
-          } else {
-            ElMessage.error(res.msg);
-          }
-        });
+        apiUpdateArticle(this.article)
+          .then(res => {
+            if (res.success == true) {
+              this.getArticleById();
+            } else {
+              ElMessage.error(res.msg);
+            }
+          })
+          .finally(() => {
+            this.isUpdateing = false;
+          });
       }
     }
   }
@@ -112,14 +134,6 @@ export default defineComponent({
       border: none;
       outline: none;
     }
-
-    .save-btn {
-      cursor: pointer;
-      font-size: 1.334rem;
-      white-space: nowrap;
-      color: #007fff;
-      user-select: none;
-    }
   }
 
   .article-main {
@@ -142,6 +156,10 @@ export default defineComponent({
       height: 100%;
       flex: 0 0 50%;
       overflow: auto;
+    }
+
+    /deep/.el-textarea__inner {
+      background-color: inherit;
     }
   }
 }

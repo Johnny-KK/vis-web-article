@@ -1,6 +1,7 @@
 <template>
   <header class="layout-header">
     <div class="header-empty"></div>
+    <img src="@/assets/logo.png" alt="icon" class="logo" @click="goHome" />
     <el-input v-model="fuzzy" class="search-box" placeholder="搜索文章" clearable></el-input>
     <el-button class="add-btn" type="primary" @click="add">新增</el-button>
     <div class="header-empty"></div>
@@ -30,9 +31,14 @@ export default defineComponent({
   props: { type: { type: String, default: 'list' } },
   setup() {
     const fuzzy = ref('');
+
     return { fuzzy };
   },
   methods: {
+    // 回到首页
+    goHome() {
+      this.$router.push('/');
+    },
     // 显示文章详情
     showArticleDetail(id: string) {
       window.open(`/#/layout/${id}`, '_blank');
@@ -59,9 +65,17 @@ export default defineComponent({
     flex: 0 0 20%;
   }
 
+  .logo {
+    height: 32px;
+    width: 32px;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+
   .search-box {
     transition: all 0.5s;
     width: 15rem;
+    margin-left: 3rem;
 
     i {
       cursor: pointer;
