@@ -1,4 +1,4 @@
-import { ApiResponse, IArticle } from '@/core/entities';
+import { ApiResponse, IArticle, TagEntity } from '@/core/entities';
 import http from './axios';
 
 /**
@@ -33,4 +33,20 @@ export function apiAddArticle(form: IArticle): Promise<ApiResponse<IArticle>> {
  */
 export function apiUpdateArticle(form: IArticle): Promise<ApiResponse<IArticle>> {
   return http.post<IArticle>('/article/updateArticle', form);
+}
+
+// ==========================================
+
+/**
+ * 条件查询标签列表
+ */
+export function apiQueryTagList(): Promise<ApiResponse<TagEntity[]>> {
+  return http.get<TagEntity[]>('/tag/queryTagList');
+}
+
+/**
+ * 新增标签
+ */
+export function apiAddTag(form: TagEntity): Promise<ApiResponse<TagEntity>> {
+  return http.post<TagEntity>('/tag/addTag', form);
 }

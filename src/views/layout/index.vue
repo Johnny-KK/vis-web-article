@@ -4,7 +4,8 @@
     <img src="@/assets/logo.png" alt="icon" class="logo" @click="goHome" />
     <el-input v-model="fuzzy" class="search-box" placeholder="搜索文章" clearable></el-input>
     <el-button class="add-btn" type="primary" @click="add">新增</el-button>
-    <div class="header-empty"></div>
+    <article-tag class="tag-list"></article-tag>
+    <!-- <div class="header-empty"></div> -->
   </header>
 
   <div class="layout-main">
@@ -22,12 +23,13 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 
+import ArticleTag from './components/article-tag.vue';
 import ArticleList from './components/article-list.vue';
 import ArticleDetail from './components/article-detail.vue';
 
 export default defineComponent({
   name: 'layout',
-  components: { [ArticleList.name]: ArticleList, [ArticleDetail.name]: ArticleDetail },
+  components: { [ArticleTag.name]: ArticleTag, [ArticleList.name]: ArticleList, [ArticleDetail.name]: ArticleDetail },
   props: { type: { type: String, default: 'list' } },
   setup() {
     const fuzzy = ref('');
@@ -83,6 +85,10 @@ export default defineComponent({
   }
 
   .add-btn {
+    margin-left: 3rem;
+  }
+
+  .tag-list {
     margin-left: 3rem;
   }
 }
