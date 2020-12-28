@@ -2,7 +2,7 @@
   <div class="article-edit">
     <header class="article-header">
       <el-input class="title-input" v-model="article.title" placeholder="请输入标题"></el-input>
-      <el-button class="add-btn" type="primary" @click="addOrupdateArticle" v-loading="isUpdateing">保存</el-button>
+      <el-button class="add-btn" type="primary" @click="back">返回</el-button>
     </header>
 
     <div class="article-main">
@@ -26,7 +26,7 @@ import { computed, defineComponent, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 
 import showdown from 'showdown';
-const converter = new showdown.Converter();
+const converter = new showdown.Converter({ tables: true });
 
 import { IArticle, emptyArticle } from '@/core/entities';
 import { apiGetArticleById, apiAddArticle, apiUpdateArticle } from '@/core/apis';
@@ -66,7 +66,7 @@ export default defineComponent({
       if (this.needUpdate === true) {
         Promise.resolve(this.addOrupdateArticle()).then(() => (this.needUpdate = false));
       }
-    }, 2000);
+    }, 5000);
   },
   methods: {
     // 根据ID获取文章信息
@@ -101,6 +101,11 @@ export default defineComponent({
             this.isUpdateing = false;
           });
       }
+    },
+    // 返回列表
+    back() {
+      // TODO 返回之前检查是否有需要保存的内容
+      this.$router.replace('/layout/list');
     }
   }
 });

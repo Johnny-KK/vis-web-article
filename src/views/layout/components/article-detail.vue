@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
+import { computed, defineComponent, reactive } from 'vue';
 
 import showdown from 'showdown';
-const converter = new showdown.Converter();
+const converter = new showdown.Converter({ tables: true });
 
 import { IArticle, emptyArticle } from '@/core/entities';
 import { apiGetArticleById } from '@/core/apis';
@@ -25,12 +25,8 @@ export default defineComponent({
   props: { id: { type: String, required: true } },
   setup() {
     const article: IArticle = reactive(emptyArticle);
-    return { article };
-  },
-  computed: {
-    contentHtml(): string {
-      return converter.makeHtml(this.article.content);
-    }
+    const contentHtml = computed(() => converter.makeHtml(article.content));
+    return { article, contentHtml };
   },
   mounted() {
     this.getArticleById();
