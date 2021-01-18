@@ -105,7 +105,7 @@ export default defineComponent({
     // 返回列表
     back() {
       // TODO 返回之前检查是否有需要保存的内容
-      this.$router.replace('/layout/list');
+      this.$router.replace(`/layout/${this.id}`);
     }
   }
 });
