@@ -13,15 +13,19 @@
 
     <section class="layout-main__middle">
       <article-list v-if="type === 'list'" @show-detail="showArticleDetail" :fuzzy="fuzzy"></article-list>
-      <article-detail v-else :id="type" :fuzzy="fuzzy"></article-detail>
+      <article-detail v-else :id="type" :fuzzy="fuzzy" @loaded="initTitle"></article-detail>
     </section>
 
-    <div class="layout-main__right">right</div>
+    <section class="layout-main__right">
+      <ul class="title-list">
+        <li v-for="title in titleList" :key="title">{{ title }}</li>
+      </ul>
+    </section>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 
 import ArticleTag from './components/article-tag.vue';
 import ArticleList from './components/article-list.vue';
@@ -33,8 +37,11 @@ export default defineComponent({
   props: { type: { type: String, default: 'list' } },
   setup() {
     const fuzzy = ref('');
-
-    return { fuzzy };
+    const titleList: string[] = reactive([]);
+    return { fuzzy, titleList };
+  },
+  mounted() {
+    //
   },
   methods: {
     // 回到首页
@@ -48,6 +55,10 @@ export default defineComponent({
     // 新增文章
     add(): void {
       window.open(`/#/article-edit/add/null`, '_blank');
+    },
+    // 初始化标题列表
+    initTitle(titleList: string[]) {
+      this.titleList.push(...titleList);
     }
   }
 });
@@ -109,6 +120,29 @@ export default defineComponent({
 
   &__right {
     flex: 0 0 20%;
+  }
+}
+
+.title-list {
+  margin: 2rem;
+  padding: 0 2rem;
+
+  top: 2rem;
+  position: sticky;
+
+  li {
+    margin: 0;
+    padding: 0;
+    font-size: 1.167rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #333;
+    line-height: 2rem;
+    cursor: pointer;
+  }
+
+  li:hover {
+    background-color: #cacece;
   }
 }
 </style>

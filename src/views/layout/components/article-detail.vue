@@ -26,6 +26,7 @@ export default defineComponent({
   setup() {
     const article: IArticle = reactive(emptyArticle);
     const contentHtml = computed(() => converter.makeHtml(article.content));
+
     return { article, contentHtml };
   },
   mounted() {
@@ -36,6 +37,13 @@ export default defineComponent({
     getArticleById() {
       apiGetArticleById(this.id).then(res => {
         Object.assign(this.article, res.data);
+        // 传递标题
+        this.$nextTick(() =>
+          this.$emit(
+            'loaded',
+            [...document.querySelectorAll('h3')].map(x => x.textContent)
+          )
+        );
       });
     },
     // 编辑
