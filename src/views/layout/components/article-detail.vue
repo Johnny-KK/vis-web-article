@@ -5,6 +5,13 @@
       <span>{{ article.modifyTime }}</span>
       <span class="dot">·</span>
       <span class="edit-btn" @click="edit(article.id)">编辑</span>
+
+      <span class="tag">前端</span>
+      <i class="el-icon-plus"></i>
+
+      <el-tag :key="tag" v-for="tag in article.tagList" closable :disable-transitions="false"> {{ tag }} </el-tag>
+      <el-input class="input-new-tag" v-if="false" v-model="inputValue" ref="saveTagInput" size="small" @keyup.enter="handleInputConfirm"> </el-input>
+      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
     </div>
     <div class="article-title">{{ article.title }}</div>
     <div class="markdown-body" v-html="contentHtml"></div>
@@ -17,15 +24,15 @@ import { computed, defineComponent, reactive } from 'vue';
 import showdown from 'showdown';
 const converter = new showdown.Converter({ tables: true });
 
-import { IArticle, emptyArticle } from '@/core/entities';
-import { apiGetArticleById } from '@/core/apis';
+import { ArticleVo, emptyArticle } from '@/core/entities';
+import { apigetArticleVoById } from '@/core/apis';
 
 export default defineComponent({
   name: 'article-detail',
   props: { id: { type: String, required: true } },
   setup() {
-    const article: IArticle = reactive(emptyArticle);
-    const contentHtml = computed(() => converter.makeHtml(article.content));
+    const article: ArticleVo = reactive(emptyArticle); // 文章
+    const contentHtml = computed(() => converter.makeHtml(article.content)); // 转化后的HTML
 
     return { article, contentHtml };
   },
@@ -35,15 +42,17 @@ export default defineComponent({
   methods: {
     // 根据ID获取文章信息
     getArticleById() {
-      apiGetArticleById(this.id).then(res => {
+      apigetArticleVoById(this.id).then(res => {
         Object.assign(this.article, res.data);
         // 传递标题
-        this.$nextTick(() =>
+        this.$nextTick(() => {
+          // const nodeList = this.$el.querySelectorAll('h2');
+          // console.log(nodeList);
           this.$emit(
             'loaded',
             [...document.querySelectorAll('h3')].map(x => x.textContent)
-          )
-        );
+          );
+        });
       });
     },
     // 编辑
@@ -82,6 +91,10 @@ export default defineComponent({
     .edit-btn {
       color: #1264b6;
       cursor: pointer;
+    }
+
+    .tag {
+      margin-left: 2rem;
     }
   }
 

@@ -5,6 +5,7 @@
         <span>{{ item.author }}</span>
         <span>{{ item.modifyTime }}</span>
         <span>前端</span>
+        <span>前端</span>
       </div>
       <div class="article-item__title">{{ item.title }}</div>
       <ul class="article-item__foot">
@@ -23,13 +24,13 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 
-import { IArticle } from '@/core/entities';
+import { ArticleVo } from '@/core/entities';
 import { apiGetArticleList } from '@/core/apis';
 
 export default defineComponent({
   name: 'article-list',
   setup() {
-    const article: { list: IArticle[]; fuzzy: string; page: number; rows: number } = reactive({ list: [], fuzzy: '', page: 1, rows: 20 });
+    const article: { list: ArticleVo[]; fuzzy: string; page: number; rows: number } = reactive({ list: [], fuzzy: '', page: 1, rows: 20 });
     return { article };
   },
   created() {

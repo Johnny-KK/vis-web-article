@@ -5,7 +5,6 @@
     <el-input v-model="fuzzy" class="search-box" placeholder="搜索文章" clearable></el-input>
     <el-button class="add-btn" type="primary" @click="add">新增</el-button>
     <article-tag class="tag-list"></article-tag>
-    <!-- <div class="header-empty"></div> -->
   </header>
 
   <div class="layout-main">

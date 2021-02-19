@@ -28,7 +28,7 @@ import { ElMessage } from 'element-plus';
 import showdown from 'showdown';
 const converter = new showdown.Converter({ tables: true });
 
-import { IArticle, emptyArticle } from '@/core/entities';
+import { ArticleVo, emptyArticle } from '@/core/entities';
 import { apiGetArticleById, apiAddArticle, apiUpdateArticle } from '@/core/apis';
 
 const loginUser = { username: 'Johnny' };
@@ -41,7 +41,7 @@ export default defineComponent({
   },
   setup() {
     // 文章
-    const article: IArticle = reactive(emptyArticle);
+    const article: ArticleVo = reactive(emptyArticle);
     // 文章对应markdown渲染结果
     const contentHtml = computed(() => converter.makeHtml(article.content));
     // 是否更新

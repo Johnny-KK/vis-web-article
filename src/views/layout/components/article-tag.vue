@@ -1,25 +1,48 @@
 <template>
   <div>
     <el-tag v-for="item in tag.list" :key="item.id" :effect="isSelected(item.name)" @click="changeSelected(item.name)">{{ item.name }}</el-tag>
-    <el-input class="input-new-tag" v-if="showNewTagAdd" v-model="newTag.name" @keyup.enter="handleInputConfirm"></el-input>
-    <el-button v-else class="button-new-tag" @click="showNewTagAdd = true">+ New Tag</el-button>
+
+    <el-tag @click="showNewTagAdd = true">New Tag</el-tag>
+
+    <el-dialog title="新增TAG" v-model="showNewTagAdd" width="30%" :destroy-on-close="true">
+      <el-form label-width="80px" :model="newTag" :rules="rules">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="newTag.name"></el-input>
+        </el-form-item>
+        <el-form-item label="颜色" prop="color">
+          <el-color-picker v-model="newTag.color"></el-color-picker>
+        </el-form-item>
+        <el-form-item label="排序" prop="ord">
+          <el-input v-model="newTag.ord" type="number"></el-input>
+        </el-form-item>
+        <el-form-item style="text-align: right;">
+          <el-button type="primary" @click="handleInputConfirm">立即创建</el-button>
+          <el-button @click="showNewTagAdd = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 
-import { TagEntity, emptyTag } from '@/core/entities';
+import { TagVo, emptyTag } from '@/core/entities';
 import { apiQueryTagList, apiAddTag } from '@/core/apis';
 
 export default defineComponent({
   name: 'article-tag',
   setup() {
-    const tag: { list: TagEntity[] } = reactive({ list: [] });
+    const tag: { list: TagVo[] } = reactive({ list: [] });
     const selectedTags: string[] = reactive([]);
-    const newTag: TagEntity = reactive(emptyTag);
+    const newTag: TagVo = reactive(emptyTag);
     const showNewTagAdd = ref(false);
-    return { tag, selectedTags, newTag, showNewTagAdd };
+
+    const rules = reactive({
+      name: [{ required: true }]
+    });
+
+    return { tag, selectedTags, newTag, showNewTagAdd, rules };
   },
   created() {
     this.queryTagList();
@@ -52,6 +75,9 @@ export default defineComponent({
         if (res.success) {
           this.queryTagList();
           Object.assign(this.newTag, emptyTag);
+          this.showNewTagAdd = false;
+        } else {
+          console.log(res.msg);
         }
       });
     }
@@ -66,19 +92,5 @@ export default defineComponent({
 
 .el-tag + .el-tag {
   margin-left: 10px;
-}
-
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
 }
 </style>
