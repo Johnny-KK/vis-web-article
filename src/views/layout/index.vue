@@ -17,7 +17,15 @@
 
     <section class="layout-main__right">
       <ul class="title-list">
-        <li v-for="title in titleList" :key="title">{{ title }}</li>
+        <li v-for="node in titleList" :key="node.title">
+          <span>{{ node.title }}</span>
+
+          <ul v-for="item in node.children" :key="item">
+            <li>
+              <span>{{ item }}</span>
+            </li>
+          </ul>
+        </li>
       </ul>
     </section>
   </div>
@@ -36,7 +44,7 @@ export default defineComponent({
   props: { type: { type: String, default: 'list' } },
   setup() {
     const fuzzy = ref('');
-    const titleList: string[] = reactive([]);
+    const titleList: { title: string | null; children: (string | null)[] }[] = reactive([]);
     return { fuzzy, titleList };
   },
   mounted() {
@@ -56,7 +64,7 @@ export default defineComponent({
       window.open(`/#/article-edit/add/null`, '_blank');
     },
     // 初始化标题列表
-    initTitle(titleList: string[]) {
+    initTitle(titleList: { title: string | null; children: (string | null)[] }[]) {
       this.titleList.push(...titleList);
     }
   }
@@ -140,7 +148,7 @@ export default defineComponent({
     cursor: pointer;
   }
 
-  li:hover {
+  li > span:hover {
     background-color: #cacece;
   }
 }

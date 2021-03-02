@@ -46,11 +46,19 @@ export default defineComponent({
         Object.assign(this.article, res.data);
         // 传递标题
         this.$nextTick(() => {
-          // const nodeList = this.$el.querySelectorAll('h2');
-          // console.log(nodeList);
+          const nodeList = this.$el.querySelectorAll('h2,h3');
+          const result: { title: string | null; children: (string | null)[] }[] = [];
+          nodeList.forEach((e: HTMLElement) => {
+            if (e.nodeName === 'H2') {
+              result.push({ title: e.textContent, children: [] });
+            } else if (e.nodeName === 'H3') {
+              result[result.length - 1].children.push(e.textContent);
+            }
+          });
           this.$emit(
             'loaded',
-            [...document.querySelectorAll('h3')].map(x => x.textContent)
+            result
+            // [...document.querySelectorAll('h3')].map(x => x.textContent)
           );
         });
       });
