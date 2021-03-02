@@ -2,7 +2,9 @@
   <div class="article-edit">
     <header class="article-header">
       <el-input class="title-input" v-model="article.title" placeholder="请输入标题"></el-input>
-      <el-button class="add-btn" type="primary" @click="back">返回</el-button>
+      <el-button class="add-btn" type="primary" @click="back" v-loading="isUpdateing">返回</el-button>
+
+      <span class="saving" v-if="isUpdateing">正在保存中...</span>
     </header>
 
     <div class="article-main">
@@ -91,10 +93,9 @@ export default defineComponent({
       } else {
         apiUpdateArticle(this.article)
           .then(res => {
-            if (res.success == true) {
-              this.getArticleById();
-            } else {
+            if (res.success !== true) {
               ElMessage.error(res.msg);
+              this.getArticleById();
             }
           })
           .finally(() => {
@@ -138,6 +139,10 @@ export default defineComponent({
       color: #000;
       border: none;
       outline: none;
+    }
+
+    .saving {
+      margin-left: 2rem;
     }
   }
 
