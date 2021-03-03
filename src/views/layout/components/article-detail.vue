@@ -47,19 +47,15 @@ export default defineComponent({
         // 传递标题
         this.$nextTick(() => {
           const nodeList = this.$el.querySelectorAll('h2,h3');
-          const result: { title: string | null; children: (string | null)[] }[] = [];
+          const result: { title: string | null; id: string; children: { title: string | null; id: string }[] }[] = [];
           nodeList.forEach((e: HTMLElement) => {
             if (e.nodeName === 'H2') {
-              result.push({ title: e.textContent, children: [] });
+              result.push({ title: e.textContent, id: e.id, children: [] });
             } else if (e.nodeName === 'H3') {
-              result[result.length - 1].children.push(e.textContent);
+              result[result.length - 1].children.push({ title: e.textContent, id: e.id });
             }
           });
-          this.$emit(
-            'loaded',
-            result
-            // [...document.querySelectorAll('h3')].map(x => x.textContent)
-          );
+          this.$emit('loaded', result);
         });
       });
     },

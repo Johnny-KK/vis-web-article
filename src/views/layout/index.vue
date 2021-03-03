@@ -18,11 +18,11 @@
     <section class="layout-main__right">
       <ul class="title-list">
         <li v-for="node in titleList" :key="node.title">
-          <span>{{ node.title }}</span>
+          <a :href="`#${node.id}`">{{ node.title }}</a>
 
           <ul v-for="item in node.children" :key="item">
             <li>
-              <span>{{ item }}</span>
+              <a :href="`#${node.id}`">{{ node.title }}</a>
             </li>
           </ul>
         </li>
@@ -44,7 +44,7 @@ export default defineComponent({
   props: { type: { type: String, default: 'list' } },
   setup() {
     const fuzzy = ref('');
-    const titleList: { title: string | null; children: (string | null)[] }[] = reactive([]);
+    const titleList: { title: string | null; id: string; children: { title: string | null; id: string }[] }[] = reactive([]);
     return { fuzzy, titleList };
   },
   mounted() {
@@ -57,14 +57,14 @@ export default defineComponent({
     },
     // 显示文章详情
     showArticleDetail(id: string) {
-      window.open(`/#/layout/${id}`, '_blank');
+      window.open(`/layout/${id}`, '_blank');
     },
     // 新增文章
     add(): void {
-      window.open(`/#/article-edit/add/null`, '_blank');
+      window.open(`/article-edit/add/null`, '_blank');
     },
     // 初始化标题列表
-    initTitle(titleList: { title: string | null; children: (string | null)[] }[]) {
+    initTitle(titleList: { title: string | null; id: string; children: { title: string | null; id: string }[] }[]) {
       this.titleList.push(...titleList);
     }
   }
@@ -148,7 +148,12 @@ export default defineComponent({
     cursor: pointer;
   }
 
-  li > span:hover {
+  li > a {
+    text-decoration: none;
+    color: #000;
+  }
+
+  li > a:hover {
     background-color: #cacece;
   }
 }
