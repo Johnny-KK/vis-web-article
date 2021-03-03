@@ -1,11 +1,11 @@
-VUE_APP_NAME="vis-web-article"
-VUE_APP_RELEASE_VERSION="0.0.2"
-
 source .env
 docker_user="vis"
 docker_pwd="visPower@2021"
 docker_project="vis"
 docker_domain="ub20-docker.com"
+
+app_name=$(echo $VUE_APP_NAME | sed -e 's/\r//g')
+app_version=$(echo $VUE_APP_RELEASE_VERSION | sed -e 's/\r//g')
 
 echo "node version: \c"
 node -v
@@ -22,8 +22,8 @@ npm run build
 
 docker login --username=${docker_user} --password=${docker_pwd} ${docker_domain}
 
-docker build -t ${docker_domain}/${docker_project}/${VUE_APP_NAME}:${VUE_APP_RELEASE_VERSION} .
+docker build -t ${docker_domain}/${docker_project}/${app_name}:${app_version} .
 
 docker image ls ${VUE_APP_NAME}
 
-docker push ${docker_domain}/${docker_project}/${VUE_APP_NAME}:${VUE_APP_RELEASE_VERSION}
+docker push ${docker_domain}/${docker_project}/${app_name}:${app_version}
