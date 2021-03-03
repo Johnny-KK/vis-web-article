@@ -1,5 +1,7 @@
-source .env
+VUE_APP_NAME="vis-web-article"
+VUE_APP_RELEASE_VERSION="0.0.2"
 
+source .env
 docker_user="vis"
 docker_pwd="visPower@2021"
 docker_project="vis"
