@@ -14,6 +14,8 @@ vue -V
 echo "docker version: \c"
 docker -v
 
+npm i --verbose
+
 npm run build
 
 docker login --username=${docker_user} --password=${docker_pwd} ${docker_domain}
