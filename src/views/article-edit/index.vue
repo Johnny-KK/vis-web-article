@@ -8,7 +8,8 @@
     </header>
 
     <div class="article-main">
-      <section class="edit">
+      <v-md-editor v-model="article.content"></v-md-editor>
+      <!-- <section class="edit">
         <el-scrollbar style="height: 100%;">
           <el-input type="textarea" autosize placeholder="请输入内容" v-model="article.content"></el-input>
         </el-scrollbar>
@@ -17,7 +18,7 @@
         <el-scrollbar style="height: 100%;">
           <span class="markdown-body" v-html="contentHtml"></span>
         </el-scrollbar>
-      </section>
+      </section> -->
     </div>
   </div>
 </template>
